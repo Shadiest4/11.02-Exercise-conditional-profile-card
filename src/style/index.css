@@ -100,3 +100,16 @@
   border: none;
   border-radius: 0 0 3px 0;
 }
+
+/* Placeholder styles for null values */
+.widget h1.placeholder,
+.widget h2.placeholder,
+.widget h3.placeholder {
+  color: #ccc;
+  font-style: italic;
+}
+.widget ul li a.placeholder {
+  color: rgba(255, 255, 255, 0.35);
+  cursor: default;
+  pointer-events: none;
+}

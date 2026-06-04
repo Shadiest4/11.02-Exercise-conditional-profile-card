@@ -24,26 +24,66 @@ import "../style/index.css";
  */
 function render(variables = {}) {
   console.log("These are the current variables: ", variables); // print on the console
-  // here we ask the logical questions to make decisions on how to build the html
-  // if includeCover==false then we reset the cover code without the <img> tag to make the cover transparent.
-  let cover = `<div class="cover"><img src="${variables.background}" /></div>`;
-  if (variables.includeCover == false) cover = "<div class='cover'></div>";
+
+  // Cover: show image only if includeCover is true and there's a background URL
+  let cover = variables.includeCover
+    ? `<div class="cover"><img src="${variables.background}" /></div>`
+    : `<div class="cover"></div>`;
+
+  // Avatar: show photo or a placeholder silhouette
+  let avatar = variables.avatarURL
+    ? `<img src="${variables.avatarURL}" class="photo" />`
+    : `<img src="https://via.placeholder.com/100/cccccc/ffffff?text=?" class="photo" />`;
+
+  // Name: show h1 with real value or placeholder text in grey
+  let fullName = [variables.name, variables.lastName].filter(Boolean).join(" ");
+  let nameHTML = fullName
+    ? `<h1>${fullName}</h1>`
+    : `<h1 class="placeholder">Your Name</h1>`;
+
+  // Role: show h2 with real value or placeholder
+  let roleHTML = variables.role
+    ? `<h2>${variables.role}</h2>`
+    : `<h2 class="placeholder">Your Role</h2>`;
+
+  // Location: show h3 with real value or placeholder
+  let location = [variables.city, variables.country].filter(Boolean).join(", ");
+  let locationHTML = location
+    ? `<h3>${location}</h3>`
+    : `<h3 class="placeholder">City, Country</h3>`;
+
+  // Social media links: real link if username exists, greyed-out icon if null
+  let twitterHTML = variables.twitter
+    ? `<li><a href="https://twitter.com/${variables.twitter}"><i class="fab fa-twitter"></i></a></li>`
+    : `<li><a href="#" class="placeholder"><i class="fab fa-twitter"></i></a></li>`;
+  let githubHTML = variables.github
+    ? `<li><a href="https://github.com/${variables.github}"><i class="fab fa-github"></i></a></li>`
+    : `<li><a href="#" class="placeholder"><i class="fab fa-github"></i></a></li>`;
+  let linkedinHTML = variables.linkedin
+    ? `<li><a href="https://linkedin.com/in/${variables.linkedin}"><i class="fab fa-linkedin"></i></a></li>`
+    : `<li><a href="#" class="placeholder"><i class="fab fa-linkedin"></i></a></li>`;
+  let instagramHTML = variables.instagram
+    ? `<li><a href="https://instagram.com/${variables.instagram}"><i class="fab fa-instagram"></i></a></li>`
+    : `<li><a href="#" class="placeholder"><i class="fab fa-instagram"></i></a></li>`;
+
+  // Social media list: use the socialMediaPosition class for positioning
+  let socialHTML = `<ul class="${variables.socialMediaPosition}">
+    ${twitterHTML}
+    ${githubHTML}
+    ${linkedinHTML}
+    ${instagramHTML}
+  </ul>`;
 
   // reset the website body with the new html output
   document.querySelector("#widget_content").innerHTML = `<div class="widget">
-            ${cover}
-          <img src="${variables.avatarURL}" class="photo" />
-          <h1>Lucy Boilett</h1>
-          <h2>Web Developer</h2>
-          <h3>Miami, USA</h3>
-          <ul class="position-right">
-            <li><a href="https://twitter.com/4geeksacademy"><i class="fab fa-twitter"></i></a></li>
-            <li><a href="https://github.com/4geeksacademy"><i class="fab fa-github"></i></a></li>
-            <li><a href="https://linkedin.com/school/4geeksacademy"><i class="fab fa-linkedin"></i></a></li>
-            <li><a href="https://instagram.com/4geeksacademy"><i class="fab fa-instagram"></i></a></li>
-          </ul>
-        </div>
-    `;
+      ${cover}
+      ${avatar}
+      ${nameHTML}
+      ${roleHTML}
+      ${locationHTML}
+      ${socialHTML}
+    </div>
+  `;
 }
 
 /**
